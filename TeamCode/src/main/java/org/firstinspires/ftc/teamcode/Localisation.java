@@ -10,6 +10,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 
+import com.pedropathing.geometry.Pose;
+import com.pedropathing.ftc.PoseConverter;
+import com.pedropathing.ftc.FTCCoordinates;
+import com.pedropathing.geometry.PedroCoordinates;
+
 /* How to use this class:
 1. In another class, extend Localisation
 2. Use the method "initLocalisationHardware()" in the init() of the OpMode
@@ -21,6 +26,8 @@ public abstract class Localisation extends OpMode { //abstract means that it can
 
     public Limelight3A limelight; // class scope variable of the limelight
     public GoBildaPinpointDriver pinpoint; // same thing for pinpoint
+
+    public Pose currentPedroPose = null; // Stores the active Pedro pose to avoid re-calculating
 
     public void initLocalisationHardware() { //method to use in the init of the other class
         limelight = hardwareMap.get(Limelight3A.class, "limelight"); // this searches the Control Hub's config. profile to find the device. The deviceName should be exactly as named in the profile
@@ -37,7 +44,7 @@ public abstract class Localisation extends OpMode { //abstract means that it can
     public void updateLocalisation() { //method to use in the loop other class
 
         pinpoint.update(); // update for latest readings
-        double headingRadians = pinpoint.getHeading(); //get the heading, returns in radians
+        double headingRadians = pinpoint.getHeading(AngleUnit.RADIANS); //get the heading, returns in radians
         double headingDegrees = Math.toDegrees(headingRadians); // convert radians to degrees
 
         limelight.updateRobotOrientation(headingDegrees); // feed the heading to the limelight
@@ -53,18 +60,45 @@ public abstract class Localisation extends OpMode { //abstract means that it can
             double limelightXInCentimeters = botpose.getPosition().x * 100; // gets the limelight x position and converts into centimeters
             double limelightYInCentimeters = botpose.getPosition().y * 100; // gets the limelight y position and converts into centimeters
 
+            telemetry.addData("Limelight X (cm)", limelightXInCentimeters); //sends all telemetry to the driver station
+            telemetry.addData("Limelight Y (cm)", limelightYInCentimeters);
+            telemetry.addData("Limelight Heading (deg)", headingDegrees);
+
             double pinpointX = limelightXInCentimeters - 180.0; // changes the x position to account for the differences in limelight and pinpoint positioning
             double pinpointY = limelightYInCentimeters - 180.0; // limelight 0,0 is at the blue goal while pinpoint 0,0 is at the centre
 
             pinpoint.setPosition(new Pose2D(DistanceUnit.CM, pinpointX, pinpointY, AngleUnit.DEGREES, headingDegrees)); /* updates pinpoint pose
             also updates the heading because the heading could've changed, meaning that the pose would be from different timings */
 
-            telemetry.addData("X (cm)", pinpointX); //sends all telemetry to the driver station
-            telemetry.addData("Y (cm)", pinpointY);
-            telemetry.addData("Heading (deg)", headingDegrees);
+            telemetry.addData("Pinpoint X (cm)", pinpointX); //sends all telemetry to the driver station
+            telemetry.addData("Pinpoint Y (cm)", pinpointY);
+            telemetry.addData("Pinpoint Heading (deg)", headingDegrees);
+
+            double limelightXInInches = botpose.getPosition().x * 39.37; // meters to inches
+            double limelightYInInches = botpose.getPosition().y * 39.37; // meters to inches
+
+            // Limelight (Blue Goal Origin) to FTC Standard (Center Origin)
+            double ftcX = limelightXInInches - 70.866; // Shift 1.8m (70.866in) to center
+            double ftcY = limelightYInInches - 70.866; // Shift 1.8m (70.866in) to center
+
+            // Generate the FTC Pose and convert to Pedro Coordinates (0-144, center 72,72)
+            Pose2D ftcPose = new Pose2D(DistanceUnit.INCH, ftcX, ftcY, AngleUnit.DEGREES, headingDegrees);
+            Pose ftcStandard = PoseConverter.pose2DToPose(ftcPose, FTCCoordinates.INSTANCE);
+            currentPedroPose = ftcStandard.getAsCoordinateSystem(PedroCoordinates.INSTANCE);
+
+//            pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, currentPedroPose.getX(), currentPedroPose.getY(), AngleUnit.DEGREES, headingDegrees));
+//
+//            telemetry.addData("Pedro X", currentPedroPose.getX()); //sends all telemetry to the driver station
+//            telemetry.addData("Pedro Y", currentPedroPose.getY());
+//            telemetry.addData("Heading (deg)", headingDegrees);
 
         }
 
+    }
+
+    public Pose getPedroLocation(){ // method to use to get the co-ordinates that pedro supports
+        telemetry.addData("Pedro X (in)", currentPedroPose.getX());
+        telemetry.addData("Pedro Y (in)", currentPedroPose.getY());
     }
 
     @Override
@@ -74,4 +108,3 @@ public abstract class Localisation extends OpMode { //abstract means that it can
     public void loop() {} //only because needed
 
 }
-
