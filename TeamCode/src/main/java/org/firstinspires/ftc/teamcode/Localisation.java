@@ -10,13 +10,19 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 
-public class AprilTagLlTest extends OpMode {
+/* How to use this class:
+1. In another class, extend Localisation
+2. Use the method "initLocalisationHardware()" in the init() of the OpMode
+3. Use the "startLocalisation()" between the init() and loop() in the start()
+4. Use "updateLocalisation()" in the loop() of the OpMode
+ */
 
-    private Limelight3A limelight; // class scope variable of the limelight
-    private GoBildaPinpointDriver pinpoint; // same thing for pinpoint
+public abstract class Localisation extends OpMode { //abstract means that it can be used to extend in any other class
 
-    @Override
-    public void init() {
+    public Limelight3A limelight; // class scope variable of the limelight
+    public GoBildaPinpointDriver pinpoint; // same thing for pinpoint
+
+    public void initLocalisationHardware() { //method to use in the init of the other class
         limelight = hardwareMap.get(Limelight3A.class, "limelight"); // this searches the Control Hub's config. profile to find the device. The deviceName should be exactly as named in the profile
         limelight.pipelineSwitch(8); // switches to the correct configured pipeline. I have used 8 for all April Tags
 
@@ -24,13 +30,11 @@ public class AprilTagLlTest extends OpMode {
         //pinpoint.resetPosAndIMU(); //reset position and calibrate IMU for accuracy  NEED TO FIND A WAY TO DO THIS SAFELY
     }
 
-    @Override
-    public void start() { // required method for the limelight
+    public void startLocalisation() { // required method for the limelight
         limelight.start(); // starts up the limelight. If there is delay, move to init() method
     }
 
-    @Override
-    public void loop() {
+    public void updateLocalisation() { //method to use in the loop other class
 
         pinpoint.update(); // update for latest readings
         double headingRadians = pinpoint.getHeading(); //get the heading, returns in radians
@@ -63,4 +67,11 @@ public class AprilTagLlTest extends OpMode {
 
     }
 
+    @Override
+    public void init() {} //only because it is needed in OpMode
+
+    @Override
+    public void loop() {} //only because needed
+
 }
+
