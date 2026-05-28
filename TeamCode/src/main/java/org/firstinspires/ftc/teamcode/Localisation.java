@@ -20,6 +20,7 @@ import com.pedropathing.geometry.PedroCoordinates;
 2. Use the method "initLocalisationHardware()" in the init() of the OpMode
 3. Use the "startLocalisation()" between the init() and loop() in the start()
 4. Use "updateLocalisation()" in the loop() of the OpMode
+5. Use "getPedroLocation()" wherever you want pedro coordinates
  */
 
 public abstract class Localisation extends OpMode { //abstract means that it can be used to extend in any other class
@@ -82,15 +83,9 @@ public abstract class Localisation extends OpMode { //abstract means that it can
             double ftcY = limelightYInInches - 70.866; // Shift 1.8m (70.866in) to center
 
             // Generate the FTC Pose and convert to Pedro Coordinates (0-144, center 72,72)
-            Pose2D ftcPose = new Pose2D(DistanceUnit.INCH, ftcX, ftcY, AngleUnit.DEGREES, headingDegrees);
-            Pose ftcStandard = PoseConverter.pose2DToPose(ftcPose, FTCCoordinates.INSTANCE);
-            currentPedroPose = ftcStandard.getAsCoordinateSystem(PedroCoordinates.INSTANCE);
-
-//            pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, currentPedroPose.getX(), currentPedroPose.getY(), AngleUnit.DEGREES, headingDegrees));
-//
-//            telemetry.addData("Pedro X", currentPedroPose.getX()); //sends all telemetry to the driver station
-//            telemetry.addData("Pedro Y", currentPedroPose.getY());
-//            telemetry.addData("Heading (deg)", headingDegrees);
+            Pose2D ftcPose = new Pose2D(DistanceUnit.INCH, ftcX, ftcY, AngleUnit.DEGREES, headingDegrees); // x/y/heading is created to be ftc standard
+            Pose ftcStandard = PoseConverter.pose2DToPose(ftcPose, FTCCoordinates.INSTANCE); // flags the line above as the ftc standard
+            currentPedroPose = ftcStandard.getAsCoordinateSystem(PedroCoordinates.INSTANCE); // maps ftc standard to the pedro corner origin
 
         }
 
@@ -99,6 +94,7 @@ public abstract class Localisation extends OpMode { //abstract means that it can
     public Pose getPedroLocation(){ // method to use to get the co-ordinates that pedro supports
         telemetry.addData("Pedro X (in)", currentPedroPose.getX());
         telemetry.addData("Pedro Y (in)", currentPedroPose.getY());
+        return currentPedroPose;
     }
 
     @Override
