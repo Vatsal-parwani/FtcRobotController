@@ -65,11 +65,11 @@ public abstract class Localisation extends OpMode { //abstract means that it can
             telemetry.addData("Limelight Y (cm)", limelightYInCentimeters);
             telemetry.addData("Limelight Heading (deg)", headingDegrees);
 
-            double pinpointX = limelightXInCentimeters - 180.0; // changes the x position to account for the differences in limelight and pinpoint positioning
-            double pinpointY = limelightYInCentimeters - 180.0; // limelight 0,0 is at the blue goal while pinpoint 0,0 is at the centre
+            double pinpointX = limelightXInCentimeters - 182.88; // changes the x position to account for the differences in limelight and pinpoint positioning
+            double pinpointY = limelightYInCentimeters - 182.88; // limelight 0,0 is at the blue goal while pinpoint 0,0 is at the centre
 
             //pinpoint.setPosition(new Pose2D(DistanceUnit.CM, pinpointX, pinpointY, AngleUnit.DEGREES, headingDegrees));
-            // updates pinpoint pose also updates the heading because the heading could've changed, meaning that the pose would be from different timings
+            //updates pinpoint pose also updates the heading because the heading could've changed, meaning that the pose would be from different timings
 
             telemetry.addData("Pinpoint X (cm)", pinpointX); //sends all telemetry to the driver station
             telemetry.addData("Pinpoint Y (cm)", pinpointY);
