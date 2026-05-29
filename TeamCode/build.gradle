@@ -25,4 +25,9 @@ android {
 
 dependencies {
     implementation project(':FtcRobotController')
+    // JUnit for the @Test annotations
+    testImplementation 'junit:junit:4.13.2'
+
+    // Mockito to fake the hardware
+    testImplementation 'org.mockito:mockito-core:5.23.0'
 }

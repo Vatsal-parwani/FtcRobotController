@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
@@ -25,8 +26,9 @@ import com.pedropathing.geometry.PedroCoordinates;
 
 public abstract class Localisation extends OpMode { //abstract means that it can be used to extend in any other class
 
+    
     public Limelight3A limelight; // class scope variable of the limelight
-    public GoBildaPinpointDriver pinpoint; // same thing for pinpoint
+//    public GoBildaPinpointDriver pinpoint; // same thing for pinpoint
 
     public Pose currentPedroPose = null; // Stores the active Pedro pose to avoid re-calculating
 
@@ -34,7 +36,7 @@ public abstract class Localisation extends OpMode { //abstract means that it can
         limelight = hardwareMap.get(Limelight3A.class, "limelight"); // this searches the Control Hub's config. profile to find the device. The deviceName should be exactly as named in the profile
         limelight.pipelineSwitch(8); // switches to the correct configured pipeline. I have used 8 for all April Tags
 
-        pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint"); // same thing as limelight, just for pinpoint now
+        //pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint"); // same thing as limelight, just for pinpoint now
         //pinpoint.resetPosAndIMU(); //reset position and calibrate IMU for accuracy  NEED TO FIND A WAY TO DO THIS SAFELY
     }
 
@@ -44,9 +46,10 @@ public abstract class Localisation extends OpMode { //abstract means that it can
 
     public void updateLocalisation() { //method to use in the loop other class
 
-        pinpoint.update(); // update for latest readings
-        double headingRadians = pinpoint.getHeading(AngleUnit.RADIANS); //get the heading, returns in radians
-        double headingDegrees = Math.toDegrees(headingRadians); // convert radians to degrees
+        //pinpoint.update(); // update for latest readings
+        //double headingRadians = pinpoint.getHeading(AngleUnit.RADIANS); //get the heading, returns in radians
+        //double headingDegrees = Math.toDegrees(headingRadians); // convert radians to degrees
+        double headingDegrees = Math.toDegrees(follower.getHeading());
 
         limelight.updateRobotOrientation(headingDegrees); // feed the heading to the limelight
 
