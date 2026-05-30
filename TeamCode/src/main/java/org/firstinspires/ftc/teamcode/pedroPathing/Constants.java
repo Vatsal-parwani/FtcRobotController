@@ -21,6 +21,20 @@ public class Constants {
             .centripetalScaling(0)
             .mass(16);
 
+    public static MecanumConstants driveConstants = new MecanumConstants()
+            .maxPower(1)
+            .rightFrontMotorName("fr")
+            .rightRearMotorName("rr")
+            .leftRearMotorName("rl")
+            .leftFrontMotorName("fl")
+            .leftFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
+            .leftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
+            .rightFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
+            .rightRearMotorDirection(DcMotorSimple.Direction.FORWARD)
+            .yVelocity(52.58)
+            .xVelocity(70.88);
+
+
     public static PathConstraints pathConstraints = new PathConstraints(0.96, 100, 1, 1);
 
     public static PinpointConstants localizerConstants = new PinpointConstants()
@@ -34,7 +48,9 @@ public class Constants {
 
     public static Follower createFollower(HardwareMap hardwareMap) {
         return new FollowerBuilder(followerConstants, hardwareMap)
+                .pathConstraints(pathConstraints)
                 .pinpointLocalizer(localizerConstants)
+                .mecanumDrivetrain(driveConstants)
                 .build();
     }
 }

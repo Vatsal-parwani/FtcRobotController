@@ -1,7 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.pedropathing.follower.Follower;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 /* How to use this class:
 1. In another class, extend Localisation
@@ -16,6 +19,7 @@ public class LocalisationTesting extends Localisation {
 
     @Override
     public void init() {
+        follower = Constants.createFollower(hardwareMap);
         initLocalisationHardware();
     }
 
@@ -25,7 +29,8 @@ public class LocalisationTesting extends Localisation {
 
     @Override
     public void loop() {
+        follower.update();
         updateLocalisation();
-        getPedroLocation();
+        //getPedroLocation();
     }
 }
