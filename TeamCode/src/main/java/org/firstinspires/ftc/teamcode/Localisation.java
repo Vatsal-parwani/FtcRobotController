@@ -48,8 +48,14 @@ public abstract class Localisation extends OpMode { //abstract means that it can
 
         double headingDegrees = Math.toDegrees(follower.getHeading());
 /// no problems here
-        limelight.updateRobotOrientation(headingDegrees + 180.0); // feed the flipped heading to the limelight
-        telemetry.addData("Limelight Heading (deg)", headingDegrees + 180.0);
+
+        // Add the 180 offset, then normalize it to wrap properly between -180 and +180
+        double offsetHeading = headingDegrees + 180.0;
+        double normalizedHeading = AngleUnit.normalizeDegrees(offsetHeading);
+
+        limelight.updateRobotOrientation(normalizedHeading); // feed the clamped, flipped heading
+        telemetry.addData("Limelight Heading (deg)", normalizedHeading);
+
 /// no problems here
         LLResult llResult = limelight.getLatestResult();
 /// no problems here

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.pedropathing.follower.Follower;
+import com.pedropathing.geometry.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -20,6 +21,13 @@ public class LocalisationTesting extends Localisation {
     @Override
     public void init() {
         follower = Constants.createFollower(hardwareMap);
+
+        // --- YOUR STARTING GRID POSITION ---
+        // Setting Pedro's origin to the exact center of the FTC field (72, 72)
+        Pose startPose = new Pose(72.0, 72.0, Math.toRadians(0.0));
+        follower.setStartingPose(startPose);
+        // -----------------------------------
+
         initLocalisationHardware();
     }
 

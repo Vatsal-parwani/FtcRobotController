@@ -19,6 +19,7 @@ public class IntakeShooterTest extends OpMode {
         DcMotor shooterMotorB = hardwareMap.get(DcMotor.class, "shooterB");
 
         intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        shooterMotorB.setDirection(DcMotorSimple.Direction.REVERSE);
 
         if (gamepad1.a){
             intakeMotor.setPower(1);
