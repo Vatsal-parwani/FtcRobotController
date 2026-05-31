@@ -50,7 +50,7 @@ public abstract class Localisation extends OpMode { //abstract means that it can
 /// no problems here
 
         // Add the 180 offset, then normalize it to wrap properly between -180 and +180
-        double offsetHeading = headingDegrees + 180.0;
+        double offsetHeading = headingDegrees;
         double normalizedHeading = AngleUnit.normalizeDegrees(offsetHeading);
 
         limelight.updateRobotOrientation(normalizedHeading); // feed the clamped, flipped heading
