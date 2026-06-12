@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 @TeleOp
-public class LocalisationTestMegaTag extends LocalisationMegaTag{
+public class LocalisationTestingMT1 extends LocalisationMT1{
 
     @Override
     public void init() {

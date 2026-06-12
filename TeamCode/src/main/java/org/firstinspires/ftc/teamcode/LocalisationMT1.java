@@ -9,7 +9,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public abstract class LocalisationMegaTag extends OpMode {
+public abstract class LocalisationMT1 extends OpMode {
 
     public Limelight3A limelight;
     public com.pedropathing.follower.Follower follower;

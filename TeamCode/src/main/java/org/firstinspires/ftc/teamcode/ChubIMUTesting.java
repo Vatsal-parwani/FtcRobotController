@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
  */
 
 @TeleOp
-public class ChubIMUTesting extends Localisation {
+public class ChubIMUTesting extends LocalisationCHubIMU {
 
     @Override
     public void init() {

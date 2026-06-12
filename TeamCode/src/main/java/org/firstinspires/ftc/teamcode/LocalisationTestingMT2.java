@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -16,7 +18,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
  */
 
 @TeleOp
-public class LocalisationTesting extends Localisation {
+public class LocalisationTestingMT2 extends LocalisationMT2 {
 
     @Override
     public void init() {
